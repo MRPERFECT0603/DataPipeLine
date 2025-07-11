@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mqtt-kafka-bridge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mqtt-kafka-bridge
+  template:
+    metadata:
+      labels:
+        app: mqtt-kafka-bridge
+    spec:
+      containers:
+      - name: mqtt-kafka-bridge
+        image: vivekshaurya/myhivemq:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 1883  
+        - containerPort: 9092 
+        env:
+        - name: MQTT_BROKER_HOST
+          value: "mqtt://localhost"
+        - name: KAFKA_BROKER_HOST
+          value: "kafka-service:9092"

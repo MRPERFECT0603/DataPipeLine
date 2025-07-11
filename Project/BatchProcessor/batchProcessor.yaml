@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: batch-processor
+  namespace: iotproject
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: batch-processor
+  template:
+    metadata:
+      labels:
+        app: batch-processor
+    spec:
+      containers:
+        - name: batch-processor
+          image: vivekshaurya/batchprocessor:latest
+          imagePullPolicy: Always
+          env:
+            - name: KAFKA_BROKER
+              value: "kafka-service:9092"      
+            - name: MONGODB_URI
+              value: "mongodb+srv://vivekshaurya62:datapipeline@datacluster.qonoksl.mongodb.net/IotData?retryWrites=true&w=majority&appName=datacluster"
+          ports:
+            - containerPort: 3000
